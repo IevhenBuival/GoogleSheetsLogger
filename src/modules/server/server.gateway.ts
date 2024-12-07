@@ -14,7 +14,8 @@ import { WebSocketListen } from 'src/Types/WebSocketListen';
 import { ServerService } from './server.service';
 
 //ws://localhost:5000/google
-@WebSocketGateway(Number(process.env.SERVER_HOST) || 5002, {
+@WebSocketGateway(Number(process.env.SERVER_HOST) || 5001, {
+  initialPacket: 'google',
   cors: { origin: '*' },
 })
 export class ServerGateway
