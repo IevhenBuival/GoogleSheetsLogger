@@ -12,10 +12,10 @@ import { Server, Socket } from 'socket.io';
 import { Message } from 'src/Types/Message';
 import { WebSocketListen } from 'src/Types/WebSocketListen';
 import { ServerService } from './server.service';
+import { LogMessage } from '../decorators/log.decorator';
 
 //ws://localhost:5000/google
-@WebSocketGateway(Number(process.env.SERVER_HOST) || 5001, {
-  initialPacket: 'google',
+@WebSocketGateway(Number(process.env.SOCKET_PORT) || 5001, {
   cors: { origin: '*' },
 })
 export class ServerGateway
@@ -25,9 +25,9 @@ export class ServerGateway
 
   @WebSocketServer() server: Server<WebSocketListen>;
   @SubscribeMessage('message')
+  @LogMessage()
   handleMessage(@MessageBody() message: Message) {
     this.server.emit('message', message);
-    console.log('emit', message);
   }
   handleConnection(@ConnectedSocket() client: Socket) {
     if (!this.serverService.getClientById(client.id))
